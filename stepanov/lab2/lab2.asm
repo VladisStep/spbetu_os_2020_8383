@@ -135,7 +135,9 @@ push si
 	call PRINT
 	
 	mov bl, es:[0080h]
-	cmp bl, 0
+	xor cx, cx
+	mov cl, bl
+	cmp cl, 0
 	jne PRINT_TAIL
 	mov dx, offset NO_TAIL
 	call PRINT
@@ -145,7 +147,7 @@ PRINT_TAIL:
  	xor SI, SI
  	xor AX, AX
  CYCLE:
- 	mov dl, es:[81h + SI]
+ 	mov dl, es:[0081h + si]
  	mov ah, 02h
 	int 21h
  	inc si
