@@ -7,13 +7,17 @@ START: JMP BEGIN
 	OUT_STR db 13, 10, "             $"
 	NUM db 13, 10, "           $"
 	ENDL db 13, 10, '$'	
-	ST_1 db 13, 10, "free$"
-	ST_2 db 13, 10, "OS XMS UMB$"
-	ST_3 db 13, 10, "driver's top memory$"
-	ST_4 db 13, 10, "MS DOS$"
-	ST_5 db 13, 10, "control block 386MAX UMB$"
-	ST_6 db 13, 10, "blocked 386MAX$"
-	ST_7 db 13, 10, "386MAX UMB$"
+	ST_1 db 13, 10, "free area$"
+	ST_2 db "OS XMS UMB$"
+	ST_3 db "driver's top memory$"
+	ST_4 db "MS DOS$"
+	ST_5 db "control block 386MAX UMB$"
+	ST_6 db "blocked 386MAX$"
+	ST_7 db "386MAX UMB$"
+	
+	AREA_BELONGS db 13, 10, "area belongs to $"
+	SIZE_OF_AREA db 13, 10, "size of area: $"
+	SIZE DB "           $"
 	
 	FREE_OK db 13, 10, "FREE OK$"
 	FREE_NOT_OK db 13, 10, "FREE NOT OK$"
@@ -188,7 +192,7 @@ NEXT_1:
 	push ax
 	mov ax, es:[1h]
 	
-	
+	mov dx, offset AREA_BELONGS
 	
 	cmp ax, 0h
 	je M_ST_1
@@ -217,21 +221,27 @@ M_ST_1:
 	mov dx, offset ST_1
 	jmp M_PR;
 M_ST_2:
+	call PRINT
 	mov dx, offset ST_2
 	jmp M_PR;
 M_ST_3:
+	call PRINT
 	mov dx, offset ST_3
 	jmp M_PR;
 M_ST_4:
+	call PRINT
 	mov dx, offset ST_4
 	jmp M_PR;
 M_ST_5:
+	call PRINT
 	mov dx, offset ST_5
 	jmp M_PR;
 M_ST_6:
+	call PRINT
 	mov dx, offset ST_6
 	jmp M_PR;
 M_ST_7:
+	call PRINT
 	mov dx, offset ST_7
 	jmp M_PR;
 	
@@ -243,14 +253,15 @@ M_END:
 	mov bx, 10h
 	mul bx
 	
-	mov di, offset OUT_STR
-	add di, 5
-	call WRD_TO_HEX 
-	mov dx, offset OUT_STR
+	mov dx, offset SIZE_OF_AREA
 	call PRINT
 	
-	mov dx, offset ENDL
+	mov di, offset SIZE
+	add di, 5
+	call WRD_TO_HEX 
+	mov dx, offset SIZE
 	call PRINT
+	
 	
 	mov cx, 8
 	xor si, si
